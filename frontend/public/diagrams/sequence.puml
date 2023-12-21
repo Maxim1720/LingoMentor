@@ -1,0 +1,93 @@
+@startuml sequence
+!define RECTANGLE class
+
+!theme blueprint
+
+actor User as u
+participant "Выбрать сущность" as choose
+participant "Преподаватели" as teachers
+participant "Занятия" as lessons
+participant "Типы Занятий" as types
+participant "Языки" as languages
+participant "Создать новую запись" as createNew
+participant "Редактировать запись" as edit
+participant "Удалить запись" as delete
+participant "Получить контакты" as getContacts
+
+u -> choose : Выбор из списка
+activate choose
+
+choose -> teachers : Выбор "Преподаватели"
+activate teachers
+choose -> lessons : Выбор "Занятия"
+activate lessons
+choose -> types : Выбор "Типы Занятий"
+activate types
+choose -> languages : Выбор "Языки"
+activate languages
+
+deactivate choose
+
+
+
+teachers --> createNew : Создание
+activate createNew
+createNew --> teachers : Завершение создания
+deactivate createNew
+teachers -->  getContacts : Нажатие кнопки "Контакты"
+activate getContacts
+getContacts --> teachers : Завершение операции
+deactivate getContacts
+
+
+types --> createNew : Создание
+languages --> createNew : Создание
+createNew --> types : Завершение создания
+createNew --> languages : Завершение создания
+
+lessons --> createNew : Создание
+activate createNew
+createNew --> teachers : Выбор преподавателя
+activate teachers
+teachers --> createNew : Завершение выбора
+deactivate teachers
+createNew --> types : Выбор типа Занятия
+activate types
+types --> createNew : Завершение выбора
+deactivate types
+createNew --> languages : Выбор языка
+activate languages
+languages --> createNew : Завершение выбора
+deactivate languages
+createNew --> lessons : Завершение создания
+
+deactivate createNew
+
+lessons --> edit : Редактирование
+activate edit
+teachers --> edit : Редактирование
+types --> edit : Редактирование
+languages --> edit : Редактирование
+
+edit --> lessons : Завершение редактирования
+edit --> teachers : Завершение редактирования
+edit --> types : Завершение редактирования
+edit --> languages: Завершение редактирования
+deactivate edit
+
+activate delete
+lessons  --> delete : Удаление
+types  --> delete : Удаление
+languages  --> delete : Удаление
+teachers --> delete : Удаление
+
+delete --> lessons : Завершение удаления
+delete --> types : Завершение удаления
+delete --> languages : Завершение удаления
+delete --> teachers : Завершение удаления
+deactivate delete
+
+
+
+deactivate teachers
+@enduml

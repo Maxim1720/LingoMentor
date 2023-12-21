@@ -1,0 +1,42 @@
+@startuml useCase
+
+!theme blueprint
+
+actor User as u
+'database "База данных" as d
+usecase (Выбрать сущность) as ce
+usecase (Создать новую запись) as cn
+'usecase (Просмотр \n существующих \n записей) as ve
+usecase (Выбрать \n существующую запись) as ci
+usecase (Удалить запись) as di
+usecase (Редактировать запись) as ei
+
+u - ce
+ce ..> cn : include
+ce .> ci : include
+
+ci .up.> di: include
+ci .right.> ei: include
+
+(Преподаватели) -down-|> ce
+(Занятия) -down-|> ce
+(Языки) -down-|> ce
+(Типы занятий) -down-|> ce
+
+
+(Создать преподавателя) -up-|> cn
+(Создать занятие) -up-|> cn
+(Создать язык) -up-|> cn
+(Создать тип занятия) -up-|> cn
+
+(Удалить \n преподавателя) -down-|> di
+(Удалить занятие) -down-|> di
+(Удалить язык) -right-|> di
+(Удалить тип занятия) -left-|> di
+
+(Редактировать \n преподавателя) -left-|> ei
+(Редактировать занятие) -up-|> ei
+(Редактировать язык) -up-|> ei
+(Редактировать тип занятия) -up-|> ei
+
+@enduml

@@ -1,0 +1,21 @@
+@startuml
+
+!theme black-knight
+
+skinparam BackgroundColor #LightCyan
+
+
+
+[Backend] as B
+[Frontend] as F
+[Postgres] as D
+(Hibernate) as H
+[HTTP] as http
+
+
+
+F <-right-> http
+http <--> B
+B <-right-> H
+H <-up-> D
+@enduml
