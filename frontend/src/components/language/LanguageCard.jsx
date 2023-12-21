@@ -1,5 +1,5 @@
 import {useState} from "react";
-import {Alert, Box, Button, ButtonGroup, Card, CardContent, Typography} from "@mui/material";
+import {Alert, Box, Button, ButtonGroup, Typography} from "@mui/material";
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import LanguageForm from "./LanguageForm.jsx";
@@ -36,7 +36,7 @@ export default function LanguageCard({language, onEdit}) {
                             )
                         })
                 }}/>
-                <Button fullWidth onClick={()=>setEditing(false)}><Cancel/></Button>
+                <Button fullWidth onClick={() => setEditing(false)}><Cancel/></Button>
             </>
 
         );
@@ -61,17 +61,17 @@ export default function LanguageCard({language, onEdit}) {
                     : <></>
                 }
 
-                <Button disabled={isEditing} color={"error"} onClick={()=>{
+                <Button disabled={isEditing} color={"error"} onClick={() => {
                     fetch(language._links.self.href, {
                         method: "DELETE",
-                        headers:{
-                            "accept":"application/json"
+                        headers: {
+                            "accept": "application/json"
                         }
-                    }).then(()=>{
+                    }).then(() => {
                         setEditing(false);
                         onEdit();
                     })
-                        .catch(error=>{
+                        .catch(error => {
                             return (
                                 <Alert severity="error">
                                     {error.message}

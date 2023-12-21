@@ -1,23 +1,23 @@
-*{
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
 
 @keyframes move {
-  0%{
-    font-size: 3em;
-  }
-  50%{
-    font-size: 1.5em;
-  }
-  100%{
-    font-size: 3em;
-  }
+    0% {
+        font-size: 3em;
+    }
+    50% {
+        font-size: 1.5em;
+    }
+    100% {
+        font-size: 3em;
+    }
 }
 
-.choose-title{
-  animation: 3s ease-in-out 0s infinite move;
-  transition: all 0.3s ease;
+.choose-title {
+    animation: 3s ease-in-out 0s infinite move;
+    transition: all 0.3s ease;
 }

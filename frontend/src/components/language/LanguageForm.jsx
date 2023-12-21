@@ -10,13 +10,13 @@ export default function LanguageForm({initData, onSubmit}) {
     const handleInput = (e) => {
         setData({
             ...data,
-            [e.target.name] : e.target.value
+            [e.target.name]: e.target.value
         });
         console.log(data);
     }
 
     useEffect(() => {
-        setData(prev=>initData?initData:prev);
+        setData(prev => initData ? initData : prev);
     }, []);
 
     return (
@@ -25,7 +25,8 @@ export default function LanguageForm({initData, onSubmit}) {
             onSubmit(data);
         }}>
             <FormControl fullWidth>
-                <TextField required id="outlined-basic" value={data.name} label="Название" name="name" onChange={handleInput}/>
+                <TextField required id="outlined-basic" value={data.name} label="Название" name="name"
+                           onChange={handleInput}/>
             </FormControl>
 
             <Button type="submit" fullWidth variant={"outlined"}>
