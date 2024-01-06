@@ -4,12 +4,11 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import {Cancel} from "@mui/icons-material";
 
-export default function ItemCard({item, onEdit, form, card, onDelete}) {
+export default function ItemCard({item, form, card, onDelete}) {
     const [isEditing, setEditing] = useState(false);
 
 
     const formView = form(() => {
-        onEdit();
         setEditing(!isEditing);
     });
     const cardView = card();
@@ -56,7 +55,6 @@ export default function ItemCard({item, onEdit, form, card, onDelete}) {
                                 .then(() => {
                                     console.log("deleted");
                                     setEditing(false);
-                                    onEdit();
                                     onDelete();
                                 })
                                 .catch((error) => {
