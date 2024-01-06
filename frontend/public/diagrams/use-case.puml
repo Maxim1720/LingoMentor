@@ -3,40 +3,39 @@
 !theme blueprint
 
 actor User as u
-'database "База данных" as d
 usecase (Выбрать сущность) as ce
 usecase (Создать новую запись) as cn
-'usecase (Просмотр \n существующих \n записей) as ve
-usecase (Выбрать \n существующую запись) as ci
 usecase (Удалить запись) as di
 usecase (Редактировать запись) as ei
-
+usecase (Просмотр \n данных \n сущности) as vd
+usecase (Выбор записи) as choose_item
 u - ce
-ce ..> cn : include
-ce .> ci : include
+ce .right.> vd: <<include>>
+vd .down.> cn: <<extend>>
 
-ci .up.> di: include
-ci .right.> ei: include
+vd <.right. choose_item : <<extend>>
+choose_item <.right. di : <<extend>>
+choose_item <.down. ei : <<exntend>>
 
-(Преподаватели) -down-|> ce
-(Занятия) -down-|> ce
-(Языки) -down-|> ce
-(Типы занятий) -down-|> ce
+(Просмотр \n преподавателей) .down.> vd : <<extend>>
+(Просмотр \n занятий) .down.> vd : <<extend>>
+(Просмотр \n языков) .down.> vd : <<extend>>
+(Просмотр \n типов занятий) .down.> vd : <<extend>>
 
 
-(Создать преподавателя) -up-|> cn
-(Создать занятие) -up-|> cn
-(Создать язык) -up-|> cn
-(Создать тип занятия) -up-|> cn
+(Создать преподавателя) .right.> cn : <<extend>>
+(Создать занятие) .up.> cn : <<extend>>
+(Создать язык) .up.> cn : <<extend>>
+(Создать тип занятия) .up.> cn : <<extend>>
 
-(Удалить \n преподавателя) -down-|> di
-(Удалить занятие) -down-|> di
-(Удалить язык) -right-|> di
-(Удалить тип занятия) -left-|> di
+(Удалить \n преподавателя) .down.> di : <<extend>>
+(Удалить занятие) .down.> di : <<extend>>
+(Удалить язык) .down.> di : <<extend>>
+(Удалить тип занятия) .left.> di : <<extend>>
 
-(Редактировать \n преподавателя) -left-|> ei
-(Редактировать занятие) -up-|> ei
-(Редактировать язык) -up-|> ei
-(Редактировать тип занятия) -up-|> ei
+(Редактировать \n преподавателя) .up.> ei : <<extend>>
+(Редактировать \n занятие) .left.> ei : <<extend>>
+(Редактировать \n язык) .up.> ei : <<extend>>
+(Редактировать \n тип занятия) .right.> ei : <<extend>>
 
 @enduml
