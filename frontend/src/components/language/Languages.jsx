@@ -2,113 +2,46 @@ import {Alert, Typography,} from "@mui/material";
 import LanguageForm from "./LanguageForm.jsx";
 import EntityPage from "../EntityPage.jsx";
 import ItemCard from "../ItemCard.jsx";
+import { useCallback, useEffect, useState } from "react";
 
 export default function Languages() {
-    // const [data, setData] = useState({
-    //   items: [],
-    //   isLoaded: false,
-    //   error: null,
-    // });
 
-    // const loadData = () => {
-    //   fetch(import.meta.env.VITE_API_LANGUAGES)
-    //     .then((resp) => resp.json())
-    //     .then((resp) =>
-    //       setData({
-    //         items: [...resp._embedded.languages],
-    //         isLoaded: true,
-    //         error: null,
-    //       })
-    //     )
-    //     .catch((error) => {
-    //       setData({
-    //         error: error,
-    //       });
-    //     });
-    // };
-    // useEffect(() => {
-    //   loadData();
-    // }, []);
+    const [itemsState, setItemsState] = useState([]);
+    
+    const loadItems = useCallback(async () => {
+        const resp = await fetch(import.meta.env.VITE_API_LANGUAGES);
+        const json = await resp.json();
+        return json._embedded.languages;
+    }, []);
 
-    // if (data.error) {
-    //   return <Alert severity="error">{data.error.message}</Alert>;
-    // } else if (!data.isLoaded) {
-    //   return <CircularProgress />;
-    // }
+    const updateItems = useCallback(()=>{
+        loadItems().then(items=>setItemsState(items));
+    }, [loadItems]);
 
-    // return (
-    //   <Container maxWidth={"lg"}>
-    //     <Grid container spacing={2} pt={"15px"}>
-    //       <Grid item xs={8}>
-    //         <Typography variant="h5" component={"h5"}>
-    //           Добавленные языки
-    //         </Typography>
-    //         {data.items.map((i) => (
-    //           <LanguageCard
-    //             language={i}
-    //             key={i._links.self.href}
-    //             onEdit={loadData}
-    //           />
-    //         ))}
-    //       </Grid>
-    //       <Grid item xs={4}>
-    //         {/*<h2>Добавьте язык!</h2>*/}
-    //         <FormControl fullWidth>
-    //           <Typography variant="h5" component={"h5"}>
-    //             Добавьте язык
-    //           </Typography>
-    //           <LanguageForm
-    //             onSubmit={(data) => {
-    //               fetch(import.meta.env.VITE_API_LANGUAGES, {
-    //                 method: "POST",
-    //                 headers: {
-    //                   "Content-Type": "application/json",
-    //                 },
-    //                 body: JSON.stringify(data),
-    //               })
-    //                 .then((resp) => {
-    //                   console.log(resp);
-    //                   loadData();
-    //                 })
-    //                 .catch((error) => {
-    //                   setData({ error: error });
-    //                 });
-    //             }}
-    //           />
-    //         </FormControl>
-    //       </Grid>
-    //     </Grid>
-    //   </Container>
-    // );
+    useEffect(()=>{
+        updateItems();
+    }, [updateItems]);
 
-    const loadItems = () => {
-        // const resp = await fetch(import.meta.env.VITE_API_LANGUAGES);
-        // const json = await resp.json();
-        // console.log(json);
-        // return json._embedded.languages;
-        return fetch(import.meta.env.VITE_API_LANGUAGES)
-            .then((resp) => resp.json())
-            .then((json) => json._embedded.languages);
-    };
 
     return (
         <EntityPage
-            loadItems={loadItems}
+            loadItems={async ()=>itemsState}
             renderItems={(items) => {
                 const listOfItems = [];
-                const onEdit = () => loadItems().then((res) => (items = res));
+                // const onEdit = () => loadItems().then((res) => (items = res));
                 items.map((i) => {
                     listOfItems.push(
                         <ItemCard
                             item={i}
                             key={i._links.self.href}
-                            onEdit={onEdit()}
+                            onEdit={updateItems}
                             card={() => {
                                 return (
                                     <Typography>{i.name}</Typography>
                                 );
                             }}
-                            form={() => {
+                            onDelete={updateItems}
+                            form={(closeForm) => {
                                 console.log("form now");
                                 return (
                                     <LanguageForm
@@ -123,8 +56,8 @@ export default function Languages() {
                                             })
                                                 .then((resp) => resp.json())
                                                 .then((resp) => {
-                                                    console.log(resp);
-                                                    onEdit();
+                                                    updateItems();
+                                                    closeForm();
                                                 })
                                                 .catch((e) => {
                                                     return <Alert severity={"danger"}>{e.message}</Alert>;
@@ -153,6 +86,7 @@ export default function Languages() {
                             .then((resp) => {
                                 console.log(resp);
                                 onPost(resp);
+                                updateItems();
                             })
                             .catch((error) => {
                                 onError(error);
